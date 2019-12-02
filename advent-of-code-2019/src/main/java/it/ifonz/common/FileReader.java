@@ -16,4 +16,10 @@ public class FileReader {
 		var readLines = FileUtils.readLines(file, Charset.defaultCharset());
 		return readLines.parallelStream().map(Long::parseLong).collect(Collectors.toList());
 	}
+	
+	public static List<String> readLines(String fileName) throws URISyntaxException, IOException {
+		var file = new File(FileReader.class.getResource(fileName).toURI());
+		return FileUtils.readLines(file, Charset.defaultCharset());
+	}
+	
 }
