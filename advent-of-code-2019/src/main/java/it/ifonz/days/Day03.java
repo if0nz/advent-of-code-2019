@@ -2,7 +2,6 @@ package it.ifonz.days;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.HashMap;
 
 import it.ifonz.bean.Coord;
@@ -11,11 +10,9 @@ import it.ifonz.common.FileReader;
 public class Day03 {
 
 	public static void main(String[] args) throws URISyntaxException, IOException {
-		var begin = Instant.now().toEpochMilli();
 		var crosses = crossTheWires();
 		part1(crosses);
 		part2(crosses);
-		System.out.println(Instant.now().toEpochMilli()-begin);
 	}
 
 	public static void part1(HashMap<Coord,Integer> crosses) {
