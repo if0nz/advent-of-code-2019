@@ -11,7 +11,7 @@ import it.ifonz.common.FileReader;
 public class Day02 {
 
 	public static void main(String args[]) throws URISyntaxException, IOException {
-		var input = FileReader.readLines("/d02.txt").get(0).split(",");
+		var input = FileReader.readLine("/d02.txt").split(",");
 		var a = new Integer[input.length];
 		a = Arrays.stream(input).map(Integer::parseInt).collect(Collectors.toList()).toArray(a);
 		part1(a.clone());

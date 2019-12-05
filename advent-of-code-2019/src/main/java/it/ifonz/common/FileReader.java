@@ -22,4 +22,8 @@ public class FileReader {
 		return FileUtils.readLines(file, Charset.defaultCharset());
 	}
 	
+	public static String readLine(String fileName) throws URISyntaxException, IOException {
+		var file = new File(FileReader.class.getResource(fileName).toURI());
+		return FileUtils.readFileToString(file, Charset.defaultCharset());
+	}
 }
