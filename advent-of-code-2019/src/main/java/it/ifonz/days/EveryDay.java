@@ -1,12 +1,10 @@
 package it.ifonz.days;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.Instant;
 
 public class EveryDay {
 
-	public static void main(String[] args) throws URISyntaxException, IOException {
+	public static void main(String[] args) throws Exception {
 		var begin = Instant.now().toEpochMilli();
 		System.out.println("D1");
 		Day01.main(args);
@@ -18,6 +16,8 @@ public class EveryDay {
 		Day04.main(args);
 		System.out.println("D5");
 		Day05.main(args);
+		System.out.println("D6");
+		Day06.main(args);
 		System.out.println("total: "+(Instant.now().toEpochMilli()-begin));
 	}
 
