@@ -2,9 +2,6 @@ package it.ifonz.days;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 import it.ifonz.common.FileReader;
 
@@ -13,48 +10,53 @@ public class Day04 {
 	public static void main(String args[]) throws URISyntaxException, IOException {
 		var range = FileReader.readLine("/d04.txt").split("-");
 		int[] numericRange = { Integer.parseInt(range[0]), Integer.parseInt(range[1]) };
-		var begin = Instant.now().toEpochMilli();
 		part1(numericRange);
 		part2(numericRange);
-		System.out.println(Instant.now().toEpochMilli() - begin);
 	}
 
 	public static void part1(int[] range) {
-		System.out.println(IntStream.rangeClosed(range[0], range[1]).parallel().filter(n -> {
+		int valid = 0;
+		for (int i = range[0]; i<=range[1]; i++) {
 			boolean sameDigit = false;
-			while (n != 0) {
-				int d1 = n % 10;
+			int n = i;
+			int d1,d2;
+			do  {
+				d1 = n % 10;
 				n /= 10;
-				int d2 = n % 10;
+				d2 = n % 10;
 				if (d1 < d2)
-					return false; // if decrease
+					break;
 				sameDigit = sameDigit || (d1 == d2);
-			}
-			return sameDigit;
-		}).count());
+			}while (n != 0);
+			valid+= d1>=d2 && sameDigit ?1:0;
+		}
+		System.out.println(valid);
 	}
 
 	public static void part2(int[] range) {
-
-		System.out.println(IntStream.rangeClosed(range[0], range[1]).parallel().filter(n -> {
+		
+		int valid = 0;
+		for (int i = range[0]; i<=range[1]; i++) {
+			int n = i;
 			int sameDigitNumber = 0;
-			var sameDigitNumbers = new ArrayList<Integer>();
+			boolean sameDigitPair = false;
+			int d1,d2;
 			do {
-				int d1 = n % 10;
+				d1 = n % 10;
 				n /= 10;
-				int d2 = n % 10;
+				d2 = n % 10;
 				if (d1 < d2)
-					return false;
+					break;
 				if (d1 == d2) {
 					sameDigitNumber = sameDigitNumber * 10 + d1;
 				} else if (sameDigitNumber != 0) {
-					sameDigitNumbers.add(sameDigitNumber * 10 + d1);
+					sameDigitPair = sameDigitPair || sameDigitNumber * 10 + d1 < 100;
 					sameDigitNumber = 0;
 				}
 			} while (n != 0);
-			return sameDigitNumbers.stream().filter(d -> d < 100).count() > 0;
-		}).count());
-
+			valid += d1>=d2 && sameDigitPair ? 1 : 0;
+		}
+		System.out.println(valid);
 	}
 
 
