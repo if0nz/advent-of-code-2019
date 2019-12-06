@@ -25,7 +25,7 @@ public class Day02 {
 
 	public static void part2(Integer[] input) {
 		int[] nounverb = {0,0};
-		IntStream.range(0,99).parallel().forEach(noun -> {
+		IntStream.range(0,99).forEach(noun -> {
 			IntStream.range(0, 99).forEach(verb -> {
 				if (execIntcode(input.clone(), noun, verb) == 19690720) {
 					nounverb[0] = noun;
