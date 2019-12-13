@@ -33,4 +33,8 @@ public class Coord {
 			return false;
 		return true;
 	}
+	
+	public int distance(Coord other) {
+		return Math.abs(this.x - other.x) + Math.abs(this.y - other.y);
+	}
 }
