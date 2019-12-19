@@ -17,22 +17,47 @@ public class Day11 {
 		var input = FileReader.readLine("/d11.txt").split(",");
 		var a = Arrays.stream(input).map(Long::parseLong).collect(Collectors.toList());
 		part1(new ArrayList<Long>(a));
+		part2(new ArrayList<Long>(a));
+	}
+
+	public static void part1(ArrayList<Long> memory) {
+		var paintItBlack = paintTheGrid(memory, 0);
+		System.out.println(paintItBlack.entrySet().size());
+
+	}
+
+	public static void part2(ArrayList<Long> memory) {
+		var grid = paintTheGrid(memory, 1);
+		var coords = grid.keySet();
+		int minx = coords.stream().min((c1, c2) -> c1.x-c2.x).get().x;
+		int maxx = coords.stream().max((c1, c2) -> c1.x-c2.x).get().x;
+		int miny = coords.stream().min((c1, c2) -> c1.y-c2.y).get().y;
+		int maxy = coords.stream().max((c1, c2) -> c1.y-c2.y).get().y;
+		for (int j = maxy; j>=miny;j--) {
+		for (int i = minx; i<=maxx;i++) {
+				var coord = new Coord(i,j);
+				var print = grid.get(coord) != null ? 
+						grid.get(coord) == 1 ? "#" : " " 
+						: " ";
+				System.out.print(print);
+			}
+			System.out.println();
+		}
 	}
 
 	@SuppressWarnings("preview")
-	public static void part1(ArrayList<Long> memory) {
+	private static HashMap<Coord, Integer> paintTheGrid(ArrayList<Long> memory, int input) {
 		char direction = 'U';
 		var ip = new AtomicInteger(0);
 		var relativeBase = new AtomicInteger(0);
 		var output = 0L;
 		var current = new Coord(0, 0);
 		var paintItBlack = new HashMap<Coord, Integer>();
-		paintItBlack.put(current, 0);
+		paintItBlack.put(new Coord(0,0), 0);
 		// I'll xor it with true to switch it after every intcode cycle
 		// true => outputs panel's color
 		// false => outputs right/left turn
 		boolean outputSwitch = false;
-		int input = 0;
 		do {
 			try {
 				output = execIntcode(memory, new int[] { input }, ip, relativeBase);
@@ -71,12 +96,7 @@ public class Day11 {
 				e.printStackTrace();
 			}
 		} while (true);
-		System.out.println(paintItBlack.entrySet().size());
-
-	}
-
-	public static void part2(ArrayList<Long> a) {
-
+		return paintItBlack;
 	}
 
 	@SuppressWarnings("preview")
