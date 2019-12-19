@@ -26,38 +26,40 @@ public class Day11 {
 		var relativeBase = new AtomicInteger(0);
 		var output = 0L;
 		var current = new Coord(0, 0);
-		var paintItBlack = new HashMap<Coord, Character>();
-		paintItBlack.put(current, '.');
-		// I'll xor it with false to switch it after every intcode cycle
+		var paintItBlack = new HashMap<Coord, Integer>();
+		paintItBlack.put(current, 0);
+		// I'll xor it with true to switch it after every intcode cycle
 		// true => outputs panel's color
 		// false => outputs right/left turn
 		boolean outputSwitch = false;
+		int input = 0;
 		do {
 			try {
-				output = execIntcode(memory, new int[] { (int)output }, ip, relativeBase);
+				output = execIntcode(memory, new int[] { input }, ip, relativeBase);
 				outputSwitch ^= true;
 				if (outputSwitch) {
 					// paint it
-					paintItBlack.put(new Coord(current.x, current.y), output == 0 ? '.' : '#');
+					paintItBlack.put(new Coord(current.x, current.y), (int)output);
 				} else {
 					// move
 					direction = switch (direction) {
-					case 'U' -> output == 0 ? 'L' : 'R';
-					case 'L' -> output == 0 ? 'D' : 'U';
-					case 'D' -> output == 0 ? 'R' : 'L';
-					case 'R' -> output == 0 ? 'U' : 'D';
-					default -> ' ';
+						case 'U' -> output == 0 ? 'L' : 'R';
+						case 'L' -> output == 0 ? 'D' : 'U';
+						case 'D' -> output == 0 ? 'R' : 'L';
+						case 'R' -> output == 0 ? 'U' : 'D';
+						default -> ' ';
 					};
 					current.x += switch (direction) {
-					case 'L' -> -1;
-					case 'R' -> 1;
-					default -> 0;
+						case 'L' -> -1;
+						case 'R' -> 1;
+						default -> 0;
 					};
 					current.y += switch (direction) {
-					case 'U' -> 1;
-					case 'D' -> -1;
-					default -> 0;
+						case 'U' -> 1;
+						case 'D' -> -1;
+						default -> 0;
 					};
+					input = paintItBlack.get(current) != null ? paintItBlack.get(current) : 0;
 				}
 			} catch (IndexOutOfBoundsException e) {
 				int size = memory.size();
